@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Searchbar } from "./Searchbar/Searchbar";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
  class  App extends Component {
 state= {
