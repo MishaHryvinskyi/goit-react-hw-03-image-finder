@@ -1,12 +1,17 @@
 import { Component } from "react";
 import { Searchbar } from "./Searchbar/Searchbar";
-
+import { ToastContainer, toast } from "react-toastify";
 
  class  App extends Component {
 state= {
   images: [],
   loading: false,
+  search: '',
 };
+
+handleFormSubmit = search => {
+  this.setState({ search });
+}
 
   componentDidMount() {
     this.setState({ loading: true });
@@ -29,7 +34,7 @@ state= {
     
     return (
       <div>
-        <Searchbar />
+        <Searchbar onSubmit={this.handleFormSubmit}/>
        {images.length > 0 && (
           <ul className="gallery">
             {images.map((image) => (
@@ -40,6 +45,18 @@ state= {
           </ul>
         )}
         {loading && <h1>Загружаємо...</h1>}
+        <ToastContainer
+            position="top-left"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+        />
       </div>
     );
   }
