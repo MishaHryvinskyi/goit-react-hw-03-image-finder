@@ -1,4 +1,6 @@
 import { Component } from "react";
+import { Searchbar } from "./Searchbar/Searchbar";
+
 
  class  App extends Component {
 state= {
@@ -27,6 +29,7 @@ state= {
     
     return (
       <div>
+        <Searchbar />
        {images.length > 0 && (
           <ul className="gallery">
             {images.map((image) => (
