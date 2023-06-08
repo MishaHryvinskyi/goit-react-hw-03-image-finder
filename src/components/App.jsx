@@ -1,6 +1,6 @@
-// App.jsx
 import React, { Component } from 'react';
 import { Searchbar } from './Searchbar/Searchbar';
+import ImageGallery from './ImageGallery/ImageGallery';
 
 class App extends Component {
   state = {
@@ -15,14 +15,13 @@ class App extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
-
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.search !== this.state.search) {
       console.log('Змінилося');
       this.setState({ loading: true });
-      
+
       fetch(
         `https://pixabay.com/api/?q=${this.state.search}&page=1&key=35643945-433c06e40cd86730ec72beccd&image_type=photo&orientation=horizontal&per_page=12`
       )
@@ -42,15 +41,7 @@ class App extends Component {
     return (
       <div>
         <Searchbar onSubmit={this.handleFormSubmit} />
-        {images.length > 0 && (
-          <ul>
-            {images.map(image => (
-              <li key={image.id}>
-                <img src={image.webformatURL} alt={image.tags} />
-              </li>
-            ))}
-          </ul>
-        )}
+        {images.length > 0 && <ImageGallery images={images} />}
         {loading && <h1>Загружаємо...</h1>}
       </div>
     );

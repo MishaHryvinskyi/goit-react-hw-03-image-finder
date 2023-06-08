@@ -1,15 +1,13 @@
-// import React, { Component } from "react";
+import React from 'react';
+import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
+import { ImageGalleryStyle } from './ImageGallery.styled';
 
-// class ImageGallery extends Component {
-//     render() {
-//         return(
-//             <ul>
-//             {images.map(image => (
-//               <li key={image.id}>
-//                 <img src={image.webformatURL} alt={image.tags} />
-//               </li>
-//             ))}
-//           </ul>
-//         )
-//     }
-// }
+const ImageGallery = ({ images }) => (
+  <ImageGalleryStyle>
+    {images.map(image => (
+      <ImageGalleryItem key={image.id} image={image} />
+    ))}
+  </ImageGalleryStyle>
+);
+
+export default ImageGallery;
