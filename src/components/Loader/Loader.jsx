@@ -5,7 +5,7 @@ import { ContainerLoader } from './Loader.styled';
 const Loader = () => (
   <ContainerLoader>
     <RotatingLines
-      strokeColor="blue"
+      strokeColor="skyblue"
       strokeWidth="5"
       animationDuration="0.75"
       width="96"
