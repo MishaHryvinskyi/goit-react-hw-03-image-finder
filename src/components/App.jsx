@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Searchbar } from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
+import Loader from './Loader/Loader';
 
 class App extends Component {
   state = {
@@ -14,7 +15,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.setState({ loading: true });
+    
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -41,8 +42,14 @@ class App extends Component {
     return (
       <div>
         <Searchbar onSubmit={this.handleFormSubmit} />
-        {images.length > 0 && <ImageGallery images={images} />}
-        {loading && <h1>Загружаємо...</h1>}
+        {loading ? (
+          <Loader />
+        ) : (
+          <div>
+            {images.length > 0 && <ImageGallery images={images} />}
+            
+          </div>
+        )}
       </div>
     );
   }
