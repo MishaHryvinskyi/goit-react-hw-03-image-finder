@@ -3,6 +3,7 @@ import { Searchbar } from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Loader from './Loader/Loader';
 import Button from './Button/Button';
+import Modal from './Modal/Modal';
 
 class App extends Component {
   state = {
@@ -10,6 +11,8 @@ class App extends Component {
     loading: false,
     search: '',
     page: 1,
+    showModal: false, 
+    selectedImage: null, 
   };
 
   handleFormSubmit = search => {
@@ -46,16 +49,31 @@ class App extends Component {
       });
   };
 
+  openModal = image => {
+    this.setState({ showModal: true, selectedImage: image });
+  };
+
+  closeModal = () => {
+    this.setState({ showModal: false, selectedImage: null });
+  };
+
   render() {
-    const { images, loading } = this.state;
+    const { images, loading, showModal, selectedImage } = this.state;
     const showLoadMoreButton = images.length > 0;
 
     return (
       <div>
         <Searchbar onSubmit={this.handleFormSubmit} />
         {loading && <Loader />}
-        {images.length > 0 && <ImageGallery images={images} />}
+        {images.length > 0 && (
+          <ImageGallery images={images} openModal={this.openModal} />
+        )}
         {showLoadMoreButton && <Button onClick={this.handleLoadMore} />}
+        {showModal && (
+          <Modal onClose={this.closeModal}>
+            <img src={selectedImage.largeImageURL} alt={selectedImage.tags} />
+          </Modal>
+        )}
       </div>
     );
   }
