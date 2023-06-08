@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Search, SearchForm, SearchFormBtn, SearchInput } from './Searchbar.styled';
 import { FcSearch } from 'react-icons/fc';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export class Searchbar extends Component {
   state = {
@@ -15,7 +17,8 @@ export class Searchbar extends Component {
     e.preventDefault();
 
     if (this.state.search.trim() === '') {
-      return alert("Нічого не ввели");
+      toast.error('Please enter a search query');
+      return;
     }
 
     this.props.onSubmit(this.state.search);
@@ -40,6 +43,7 @@ export class Searchbar extends Component {
             onChange={this.handleSearchChange}
           />
         </SearchForm>
+        <ToastContainer />
       </Search>
     );
   }
