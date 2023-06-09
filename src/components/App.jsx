@@ -4,6 +4,7 @@ import ImageGallery from './ImageGallery/ImageGallery';
 import Loader from './Loader/Loader';
 import Button from './Button/Button';
 import Modal from './Modal/Modal';
+import fetchImages from './API/api';
 
 class App extends Component {
   state = {
@@ -11,41 +12,26 @@ class App extends Component {
     loading: false,
     search: '',
     page: 1,
-    showModal: false, 
-    selectedImage: null, 
+    showModal: false,
+    selectedImage: null,
   };
 
   handleFormSubmit = search => {
-    this.setState({ search, page: 1, images: [], loading: true }, () => {
-      this.fetchImages();
-    });
+    this.setState({ search, page: 1, images: [], loading: true });
   };
 
   handleLoadMore = () => {
     this.setState(prevState => ({
       page: prevState.page + 1,
-      loading: true,
-    }), () => {
-      this.fetchImages();
-    });
+    }));
   };
 
   fetchImages = () => {
-    const { search, page } = this.state;
+    const { search, page, images } = this.state;
 
-    fetch(
-      `https://pixabay.com/api/?q=${search}&page=${page}&key=35643945-433c06e40cd86730ec72beccd&image_type=photo&orientation=horizontal&per_page=12`
-    )
-      .then(res => res.json())
-      .then(data => {
-        this.setState(prevState => ({
-          images: [...prevState.images, ...data.hits],
-          loading: false,
-        }));
-      })
-      .catch(error => {
-        console.log('Error fetching data:', error);
-        this.setState({ loading: false });
+    fetchImages(search, page, images)
+      .then(updatedState => {
+        this.setState(updatedState);
       });
   };
 
@@ -57,9 +43,17 @@ class App extends Component {
     this.setState({ showModal: false, selectedImage: null });
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.search !== this.state.search ||
+      prevState.page !== this.state.page
+    ) {
+      this.fetchImages();
+    }
+  }
+
   render() {
-    const { images, loading, showModal, selectedImage } = this.state;
-    const showLoadMoreButton = images.length > 0;
+    const { images, loading, showModal, selectedImage, showLoadMoreButton } = this.state;
 
     return (
       <div>
@@ -68,7 +62,9 @@ class App extends Component {
         {images.length > 0 && (
           <ImageGallery images={images} openModal={this.openModal} />
         )}
-        {showLoadMoreButton && <Button onClick={this.handleLoadMore} />}
+        {showLoadMoreButton && images.length >= 12 && (
+          <Button onClick={this.handleLoadMore} />
+        )}
         {showModal && (
           <Modal onClose={this.closeModal}>
             <img src={selectedImage.largeImageURL} alt={selectedImage.tags} />
